@@ -1,6 +1,5 @@
 class Parser
 
-
   def response(request)
     assemble_response_string
   end
@@ -15,11 +14,13 @@ class Parser
     headers + output
   end
 
+
   #make hash
 
   #counter for hellos
+  
   #counter for total requests
   #evaluate path
-  #return value for shutdown 
+  #return value for shutdown
 
 end
