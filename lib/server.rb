@@ -19,6 +19,7 @@ def connection_loop #runs as long as program is going
     puts "Got the request: " + request.inspect
     response = @parser.response(request)
     connection.puts response
+    #shutdown receiver?
   end
 end
 
