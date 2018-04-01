@@ -45,17 +45,24 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_can_parse_path
-    actual = @p.parse_path("/hello")
+    actual = @p.parse_path({"Path" => "/hello"})
     assert_equal "<h1>Hello, World! (0)</h1>", actual
+    #test other paths
   end
 
   def test_it_outputs_date_and_time
     date_time = @p.date_time
     assert_equal "<h1>", @p.date_time[0..3]
-    assert_equal "</h1>", @p.date_time[-1..-5]
+    assert_equal "</h1>", @p.date_time[-5..-1]
     assert @p.date_time.length > 37
     assert @p.date_time.include?("M on ")
     assert @p.date_time.include?(", 201") #will fail in 2020
+  end
+
+  def test_it_can_display_debug_info
+    actual = @p.debug({"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
+    expected =  "<pre>\nVerb: GET\nPath: /\nProtocol: HTTP/1.1\nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8\n</pre>"
+    assert_equal expected, actual
   end
 
 end

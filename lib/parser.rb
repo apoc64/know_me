@@ -9,14 +9,13 @@ class Parser
   def response(request_lines)
     request = make_request_hash(request_lines)
     puts request
-
-
-    html_body = parse_path(request["Path"])
+    html_body = parse_path(request)
     assemble_response_string(html_body)
   end
 
-  def parse_path(path)
-    case path
+  def parse_path(request)
+    case request["Path"]
+    when "/" then debug(request)
     when "/hello" then hello_counter
     when "/datetime" then date_time
     end
@@ -45,6 +44,9 @@ class Parser
       split = line.split(": ")
       request[split[0]] = split[1]
     end
+    host = request["Host"].split(":")
+    request["Host"] = host[0] #split host/port
+    request["Port"] = host[1]
     # binding.pry
     request
   end
@@ -56,7 +58,19 @@ class Parser
   end
 
   def date_time
-    "cdcscsvsvsvvfvfe"
+    "<h1>#{Time.now.strftime('%I:%M%p on %A, %B %d, %Y')}</h1>"
+  end
+
+  def debug(request)
+    response = "<pre>\n"
+    response += "Verb: " + request["Verb"] + "\n"
+    response += "Path: " + request["Path"] + "\n"
+    response += "Protocol: " + request["Protocol"] + "\n"
+    response += "Host: " + request["Host"] + "\n"
+    response += "Port: " + request["Port"] + "\n"
+    response += "Origin: " + request["Origin"] + "\n" if request["Origin"] #doesn't happen on Chrome
+    response += "Accept: " + request["Accept"] + "\n"
+    response += "</pre>"
   end
 
   #counter for total requests
