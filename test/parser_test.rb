@@ -72,4 +72,11 @@ class ParserTest < Minitest::Test
     refute @p.should_continue
   end
 
+  def test_it_can_search_words
+    actual = @p.word_search("pizza")
+    assert_equal "<h1>PIZZA is a known word</h1>", actual
+    actual = @p.word_search("NIFNBNJ")
+    assert_equal "<h1>NIFNBNJ is not a known word</h1>"
+  end
+
 end

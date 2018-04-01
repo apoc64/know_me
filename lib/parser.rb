@@ -24,6 +24,7 @@ class Parser
     when "/hello" then hello_counter
     when "/datetime" then date_time
     when "/shutdown" then shutdown
+    when "/word_search?word" then word_search(request["Value"])
     end
   end
 
@@ -43,10 +44,16 @@ class Parser
     request = {}
     first_line = request_lines[0].split
     request["Verb"] = first_line[0]
-    request["Path"] = first_line[1] #split values?
+
+    if first_line[1]
+      path_elements = first_line[1].split("=")
+      request["Path"] = path_elements[0] #split values?
+      request["Value"] = path_elements[1]
+    end
+
     request["Protocol"] = first_line[2]
     request_lines.each do |line|
-      # binding,pry
+      # binding.pry
       split = line.split(": ")
       request[split[0]] = split[1]
     end
@@ -83,5 +90,9 @@ class Parser
     @should_continue = false
     "<h1>Total Requests: #{@total_counter}</h1>"
   end
+
+  def word_search(word)
+
+  end 
 
 end
