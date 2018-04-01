@@ -16,9 +16,9 @@ class Parser
   end
 
   def parse_path(path)
-    body = ""
     case path
-    when "/hello" then body = hello_counter
+    when "/hello" then hello_counter
+    when "/datetime" then date_time
     end
   end
 
@@ -53,6 +53,10 @@ class Parser
   def hello_counter
     @hello_counter += 1
     "<h1>Hello, World! (#{@hello_counter})</h1>"
+  end
+
+  def date_time
+    "cdcscsvsvsvvfvfe"
   end
 
   #counter for total requests

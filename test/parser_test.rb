@@ -49,4 +49,13 @@ class ParserTest < Minitest::Test
     assert_equal "<h1>Hello, World! (0)</h1>", actual
   end
 
+  def test_it_outputs_date_and_time
+    date_time = @p.date_time
+    assert_equal "<h1>", @p.date_time[0..3]
+    assert_equal "</h1>", @p.date_time[-1..-5]
+    assert @p.date_time.length > 37
+    assert @p.date_time.include?("M on ")
+    assert @p.date_time.include?(", 201") #will fail in 2020
+  end
+
 end
