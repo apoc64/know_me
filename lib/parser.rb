@@ -1,12 +1,16 @@
 require 'pry'
 
 class Parser
+  attr_reader :should_continue
 
   def initialize
     @hello_counter = -1
+    @total_counter = 0
+    @should_continue = true
   end
 
   def response(request_lines)
+    @total_counter += 1
     request = make_request_hash(request_lines)
     puts request
     html_body = parse_path(request)
@@ -18,6 +22,7 @@ class Parser
     when "/" then debug(request)
     when "/hello" then hello_counter
     when "/datetime" then date_time
+    when "/shutdown" then shutdown
     end
   end
 
@@ -44,9 +49,11 @@ class Parser
       split = line.split(": ")
       request[split[0]] = split[1]
     end
-    host = request["Host"].split(":")
-    request["Host"] = host[0] #split host/port
-    request["Port"] = host[1]
+    if request["Host"]
+      host = request["Host"].split(":")
+      request["Host"] = host[0] #split host/port
+      request["Port"] = host[1]
+    end
     # binding.pry
     request
   end
@@ -71,6 +78,11 @@ class Parser
     response += "Origin: " + request["Origin"] + "\n" if request["Origin"] #doesn't happen on Chrome
     response += "Accept: " + request["Accept"] + "\n"
     response += "</pre>"
+  end
+
+  def shutdown
+    @should_terminate = false
+    "<h1>Total Requests: #{@total_counter}</h1>"
   end
 
   #counter for total requests
