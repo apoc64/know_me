@@ -32,19 +32,21 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_can_count
-    skip
-    assert_equal "0", @p.response("")[-20]
-    @p.hello_counter
-    assert_equal "1", @p.response("")[-20]
-    @p.hello_counter
-    @p.hello_counter
-    assert_equal "3", @p.response("")[-20]
+    # skip
+    assert_equal "<h1>Hello, World! (0)</h1>", @p.hello_counter
+    assert_equal "<h1>Hello, World! (1)</h1>", @p.hello_counter
+    assert_equal "<h1>Hello, World! (2)</h1>", @p.hello_counter
   end
 
   def test_it_makes_a_hash
     request_lines = ["l: x", "z: r"]
     request = @p.make_request_hash(request_lines)
     assert_instance_of Hash, request
+  end
+
+  def test_it_can_parse_path
+    actual = @p.parse_path("/hello")
+    assert_equal "<h1>Hello, World! (0)</h1>", actual
   end
 
 end

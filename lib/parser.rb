@@ -2,11 +2,24 @@ require 'pry'
 
 class Parser
 
+  def initialize
+    @hello_counter = -1
+  end
+
   def response(request_lines)
     request = make_request_hash(request_lines)
     puts request
-    html_body = "<h1>Hello World!</h1>"
+
+
+    html_body = parse_path(request["Path"])
     assemble_response_string(html_body)
+  end
+
+  def parse_path(path)
+    body = ""
+    case path
+    when "/hello" then body = hello_counter
+    end
   end
 
   def assemble_response_string(html_body)
@@ -21,7 +34,7 @@ class Parser
 
   #make hash
   def make_request_hash(request_lines)
-    # binding.pry
+    # binding.pry #must handle bad formatting
     request = {}
     first_line = request_lines[0].split
     request["Verb"] = first_line[0]
@@ -38,7 +51,8 @@ class Parser
 
   #counter for hellos
   def hello_counter
-
+    @hello_counter += 1
+    "<h1>Hello, World! (#{@hello_counter})</h1>"
   end
 
   #counter for total requests
