@@ -81,7 +81,7 @@ class Parser
   end
 
   def shutdown
-    @should_terminate = false
+    @should_continue = false
     "<h1>Total Requests: #{@total_counter}</h1>"
   end
 

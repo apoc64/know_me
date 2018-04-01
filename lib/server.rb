@@ -12,7 +12,7 @@ class Server
   end
 
   def connection_loop #runs as long as program is going
-    loop do
+    while @parser.should_continue
       puts "Ready For request" # can delete
       connection = @server.accept
       request = get_request(connection)
