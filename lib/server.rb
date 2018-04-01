@@ -8,10 +8,9 @@ class Server
     server = TCPServer.new(port)
     parser = Parser.new
     connection_loop(server, parser)
-
   end
 
-  def connection_loop(server, parser) #runs as long as program is going
+  def connection_loop(server, parser)
     while parser.should_continue
       puts "Ready For request"
       connection = server.accept
@@ -28,7 +27,6 @@ class Server
       request_lines << line.chomp
     end
     request_lines
-    #make it a hash?
   end
 
 end
