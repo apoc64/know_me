@@ -68,16 +68,15 @@ class Parser
     "<h1>#{Time.now.strftime('%I:%M%p on %A, %B %d, %Y')}</h1>"
   end
 
-  def debug(request)
-    response = "<pre>\n"
-    response += "Verb: " + request["Verb"] + "\n"
-    response += "Path: " + request["Path"] + "\n"
-    response += "Protocol: " + request["Protocol"] + "\n"
-    response += "Host: " + request["Host"] + "\n"
-    response += "Port: " + request["Port"] + "\n"
-    response += "Origin: " + request["Origin"] + "\n" if request["Origin"] #doesn't happen on Chrome
-    response += "Accept: " + request["Accept"] + "\n"
-    response += "</pre>"
+  def debug(req) #Chrome doesn't have 'Origin'... more guards?
+    response = "Verb: " + req["Verb"]
+    response += "\nPath: " + req["Path"]
+    response += "\nProtocol: " + req["Protocol"]
+    response += "\nHost: " + req["Host"]
+    response += "\nPort: " + req["Port"]
+    response += "\nOrigin: " + req["Origin"] if req["Origin"]
+    response += "\nAccept: " + req["Accept"]
+    response = "<pre>" + response + "</pre>"
   end
 
   def shutdown
