@@ -1,4 +1,5 @@
 require 'pry'
+#require 'complete_me'?
 
 class Parser
   attr_reader :should_continue
@@ -37,12 +38,12 @@ class Parser
   end
 
   #make hash
-  def make_request_hash(request_lines)
+  def make_request_hash(request_lines) #extract methods?
     # binding.pry #must handle bad formatting
     request = {}
     first_line = request_lines[0].split
     request["Verb"] = first_line[0]
-    request["Path"] = first_line[1]
+    request["Path"] = first_line[1] #split values?
     request["Protocol"] = first_line[2]
     request_lines.each do |line|
       # binding,pry
@@ -58,7 +59,6 @@ class Parser
     request
   end
 
-  #counter for hellos
   def hello_counter
     @hello_counter += 1
     "<h1>Hello, World! (#{@hello_counter})</h1>"
@@ -84,9 +84,5 @@ class Parser
     @should_continue = false
     "<h1>Total Requests: #{@total_counter}</h1>"
   end
-
-  #counter for total requests
-  #evaluate path
-  #return value for shutdown
 
 end

@@ -69,7 +69,7 @@ class ParserTest < Minitest::Test
     assert @p.should_continue
     actual = @p.shutdown
     assert_equal "<h1>Total Requests: 0</h1>", actual
-    assert @p.should_continue
+    refute @p.should_continue
   end
 
 end
