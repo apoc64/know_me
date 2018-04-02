@@ -72,11 +72,25 @@ class ParserTest < Minitest::Test
     refute @p.should_continue
   end
 
+  def test_it_can_count_total_requests
+    @p.response(["GET / HTTP"])
+    @p.response(["GET / HTTP"])
+    output = @p.response(["GET /shutdown HTTP"])
+    assert output.include?("<h1>Total Requests: 3</h1>")
+  end
+
   def test_it_can_search_words
+    skip
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
     actual = @p.word_search("NIFNBNJ")
     assert_equal "<h1>NIFNBNJ is not a known word</h1>", actual
+  end
+
+  def test_it_can_complete_me
+    skip
+    cm = @p.complete_me
+    assert_instance_of CompleteMe, cm
   end
 
 end

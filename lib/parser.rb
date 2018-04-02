@@ -77,13 +77,13 @@ class Parser
   end
 
   def debug(req) #Chrome doesn't have 'Origin'... more guards?
-    response = "Verb: " + req["Verb"]
-    response += "\nPath: " + req["Path"]
-    response += "\nProtocol: " + req["Protocol"]
-    response += "\nHost: " + req["Host"]
-    response += "\nPort: " + req["Port"]
+    response = "Verb: " + req["Verb"] if req["Verb"]
+    response += "\nPath: " + req["Path"] if req["Path"]
+    response += "\nProtocol: " + req["Protocol"] if req["Protocol"]
+    response += "\nHost: " + req["Host"] if req["Host"]
+    response += "\nPort: " + req["Port"] if req["Port"]
     response += "\nOrigin: " + req["Origin"] if req["Origin"]
-    response += "\nAccept: " + req["Accept"]
+    response += "\nAccept: " + req["Accept"] if req["Accept"]
     response = "<pre>" + response + "</pre>"
   end
 
@@ -100,7 +100,7 @@ class Parser
     end
   end
 
-  def complete_me
+  def complete_me #so it doesn't have to keep reloading
     if @cm.nil?
       io = FileIO.new
       @cm = io.complete_me
