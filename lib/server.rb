@@ -1,6 +1,7 @@
 require 'socket'
 require 'pry'
 require_relative 'parser'
+require_relative 'request'
 
 class Server
 
@@ -18,13 +19,13 @@ class Server
       req = Request.new(get_request(client))
       puts "Got the request: " + req.inspect
       response = parser.response(req)
-      connection.puts response
+      client.puts response
     end
   end
 
   def get_request(client)
     request_lines = []
-    while (line = connection.gets) && (!line.chomp.empty?)
+    while (line = client.gets) && (!line.chomp.empty?)
       request_lines << line.chomp
     end
     request_lines

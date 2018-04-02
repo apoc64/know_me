@@ -13,20 +13,20 @@ class Parser
 
   def response(request)
     @total_counter += 1
-    @request = request
+    @req = request
     # request = make_request_hash(request_lines)
     # puts request
-    html_body = parse_path(request)
+    html_body = parse_path
     assemble_response_string(html_body)
   end
 
-  def parse_path(request)
-    case request["Path"]
+  def parse_path(req = @req)
+    case req.path
     when "/" then debug(request)
     when "/hello" then hello_counter
     when "/datetime" then date_time
     when "/shutdown" then shutdown
-    when "/word_search?word" then word_search(request["Value"])
+    when "/word_search?word" then word_search(req.value)
     end
   end
 
@@ -41,32 +41,32 @@ class Parser
   end
 
   #make hash - REFACTOR!!!
-  def make_request_hash(request_lines) #extract methods?
-    # binding.pry #must handle bad formatting
-    request = {}
-    first_line = request_lines[0].split
-    request["Verb"] = first_line[0]
-
-    if first_line[1]
-      path_elements = first_line[1].split("=")
-      request["Path"] = path_elements[0] #split values?
-      request["Value"] = path_elements[1]
-    end
-
-    request["Protocol"] = first_line[2]
-    request_lines.each do |line|
-      # binding.pry
-      split = line.split(": ")
-      request[split[0]] = split[1]
-    end
-    if request["Host"]
-      host = request["Host"].split(":")
-      request["Host"] = host[0] #split host/port
-      request["Port"] = host[1]
-    end
-    # binding.pry
-    request
-  end
+  # def make_request_hash(request_lines) #extract methods?
+  #   # binding.pry #must handle bad formatting
+  #   request = {}
+  #   first_line = request_lines[0].split
+  #   request["Verb"] = first_line[0]
+  #
+  #   if first_line[1]
+  #     path_elements = first_line[1].split("=")
+  #     request["Path"] = path_elements[0] #split values?
+  #     request["Value"] = path_elements[1]
+  #   end
+  #
+  #   request["Protocol"] = first_line[2]
+  #   request_lines.each do |line|
+  #     # binding.pry
+  #     split = line.split(": ")
+  #     request[split[0]] = split[1]
+  #   end
+  #   if request["Host"]
+  #     host = request["Host"].split(":")
+  #     request["Host"] = host[0] #split host/port
+  #     request["Port"] = host[1]
+  #   end
+  #   # binding.pry
+  #   request
+  # end
 
   def hello_counter
     @hello_counter += 1

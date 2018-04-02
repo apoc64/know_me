@@ -1,8 +1,13 @@
 class Request
+  attr_reader :verb,
+              :path,
+              :protocol,
+              :value,
+              :elements
 
   def initialize(request_lines)
     if set_first_line(request_lines[0])
-      set_remaining_values(request_lines[1..-1])
+      @elements = make_element_hash(request_lines[1..-1])
     end
   end
 
@@ -16,6 +21,12 @@ class Request
       @value = path_elements[1]
     end
     @protocol = elements[2] if elements[2]
-  end 
+  end
+
+  def make_element_hash(request_lines)
+    request_lines.map do |line|
+      line.split(": ")
+    end.to_h
+  end
 
 end
