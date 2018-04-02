@@ -1,20 +1,20 @@
 # require 'simplecov'
 # SimpleCov.start
-require_relative "../lib/parser"
+require_relative "../lib/router"
 require_relative "../lib/request"
 require 'pry'
 require "Minitest/autorun"
 require "Minitest/pride"
 
-class ParserTest < Minitest::Test
+class RouterTest < Minitest::Test
 
   def setup
-    @p = Parser.new
+    @p = Router.new
     @req = Request.new(["GET /hello HTTP/1.1"])
   end
 
   def test_it_exists
-    assert_instance_of Parser, @p
+    assert_instance_of Router, @p
   end
 
   def test_it_responds

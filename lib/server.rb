@@ -1,24 +1,24 @@
 require 'socket'
 require 'pry'
-require_relative 'parser'
+require_relative 'router'
 require_relative 'request'
 
 class Server
 
   def initialize(port)
     server = TCPServer.new(port)
-    parser = Parser.new
-    connection_loop(server, parser)
+    router = Router.new
+    connection_loop(server, router)
   end
 
-  def connection_loop(server, parser)
-    while parser.should_continue
+  def connection_loop(server, router)
+    while router.should_continue
       puts "Ready For request"
       client = server.accept
       # request = get_request(connection)
       req = Request.new(get_request(client))
       puts "Got the request: " + req.inspect
-      response = parser.response(req)
+      response = router.response(req)
       client.puts response
     end
   end

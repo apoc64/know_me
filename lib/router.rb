@@ -2,7 +2,7 @@ require 'pry'
 require_relative 'file_io'
 # require_relative '../../complete_me_project/Complete_Me/lib/complete_me'
 
-class Parser
+class Router
   attr_reader :should_continue
 
   def initialize
