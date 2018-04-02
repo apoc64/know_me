@@ -15,7 +15,6 @@ class Server
     while router.should_continue
       puts "Ready For request"
       client = server.accept
-      # request = get_request(connection)
       req = Request.new(get_request(client))
       puts "Got the request: " + req.inspect
       response = router.response(req)

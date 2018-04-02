@@ -1,9 +1,9 @@
 class Request
   attr_reader :verb,
-              :path,
-              :protocol,
-              :value,
-              :elements
+  :path,
+  :protocol,
+  :elements,
+  :parameters
 
   def initialize(request_lines)
     if set_first_line(request_lines[0])
@@ -20,11 +20,20 @@ class Request
     lines = first_line.split
     @verb = lines[0]
     if lines[1]
-      path_elements = lines[1].split("=")
+      path_elements = lines[1].split("?")
       @path = path_elements[0]
-      @value = path_elements[1]
+      @parameters = set_parameters(path_elements[1]) if path_elements[1]
     end
     @protocol = lines[2] if lines[2]
+  end
+
+  def set_parameters(path_element)
+    all_parameters = path_element.split("&")
+    if path_element[1]
+      all_parameters.map do |param|
+        param.split("=")
+      end.to_h
+    end
   end
 
   def make_element_hash(request_lines)
@@ -64,5 +73,9 @@ class Request
       "N/A"
     end
   end
+
+  # def value
+  #   @params[0][1] if @params[0][1]
+  # end
 
 end

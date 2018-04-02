@@ -54,10 +54,10 @@ class RouterTest < Minitest::Test
 
   def test_it_can_display_debug_info
     actual = @p.debug(@req)
-      #{"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
     expected =  "<pre>Verb: GET\nPath: /hello\nProtocol: HTTP/1.1\nHost: N/A\nPort: N/A\nOrigin: N/A\nAccept: N/A</pre>"
-    # \nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</pre>"
     assert_equal expected, actual
+      #{"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
+    # \nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</pre>"
   end
 
   def test_it_can_shutdown
@@ -76,7 +76,7 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_can_search_words
-    # skip
+    skip
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
     actual = @p.word_search("NIFNBNJ")
@@ -84,7 +84,7 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_can_complete_me
-    # skip
+    skip
     cm = @p.complete_me
     assert_instance_of CompleteMe, cm
   end

@@ -16,9 +16,15 @@ class RequestTest < Minitest::Test
   def test_it_can_set_first_line
     @req.set_first_line("POST /word_search?word=pizza HTTP/1.2")
     assert_equal "POST", @req.verb
-    assert_equal "/word_search?word", @req.path
-    assert_equal "pizza", @req.value
+    assert_equal "/word_search", @req.path
+    assert_equal "pizza", @req.parameters["word"]
     assert_equal "HTTP/1.2", @req.protocol
+  end
+
+  def test_it_can_set_parameters
+    actual = @req.set_parameters("word=pizza&guess=87")
+    expected = {"word" => "pizza", "guess" => "87"}
+    assert_equal expected, actual
   end
 
   def test_it_can_make_element_hash

@@ -23,7 +23,7 @@ class Router
     when "/hello" then hello_counter
     when "/datetime" then date_time
     when "/shutdown" then shutdown
-    when "/word_search?word" then word_search(req.value)
+    when "/word_search" then word_search(req.parameters["word"])
     end
   end
 
@@ -63,6 +63,7 @@ class Router
   end
 
   def word_search(word)
+    return "<h1>Not a valid word</h1>" if word.nil?
     if complete_me.include_word?(word)
       "<h1>#{word.upcase} is a known word</h1>"
     else
