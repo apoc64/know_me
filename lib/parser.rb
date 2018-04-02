@@ -11,10 +11,11 @@ class Parser
     @should_continue = true
   end
 
-  def response(request_lines)
+  def response(request)
     @total_counter += 1
-    request = make_request_hash(request_lines)
-    puts request
+    @request = request
+    # request = make_request_hash(request_lines)
+    # puts request
     html_body = parse_path(request)
     assemble_response_string(html_body)
   end

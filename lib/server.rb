@@ -13,15 +13,16 @@ class Server
   def connection_loop(server, parser)
     while parser.should_continue
       puts "Ready For request"
-      connection = server.accept
-      request = get_request(connection)
-      puts "Got the request: " + request.inspect
-      response = parser.response(request)
+      client = server.accept
+      # request = get_request(connection)
+      req = Request.new(get_request(client))
+      puts "Got the request: " + req.inspect
+      response = parser.response(req)
       connection.puts response
     end
   end
 
-  def get_request(connection)
+  def get_request(client)
     request_lines = []
     while (line = connection.gets) && (!line.chomp.empty?)
       request_lines << line.chomp
