@@ -1,5 +1,6 @@
 require 'pry'
-#require 'complete_me'?
+require_relative 'file_io'
+# require_relative '../../complete_me_project/Complete_Me/lib/complete_me'
 
 class Parser
   attr_reader :should_continue
@@ -92,7 +93,20 @@ class Parser
   end
 
   def word_search(word)
+    if complete_me.include_word?(word)
+      "<h1>#{word.upcase} is a known word</h1>"
+    else
+      "<h1>#{word.upcase} is not a known word</h1>"
+    end
+  end
 
-  end 
+  def complete_me
+    if @cm.nil?
+      io = FileIO.new
+      @cm = io.complete_me
+    else
+      @cm
+    end
+  end
 
 end

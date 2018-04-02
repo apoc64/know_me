@@ -76,7 +76,7 @@ class ParserTest < Minitest::Test
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
     actual = @p.word_search("NIFNBNJ")
-    assert_equal "<h1>NIFNBNJ is not a known word</h1>"
+    assert_equal "<h1>NIFNBNJ is not a known word</h1>", actual
   end
 
 end
