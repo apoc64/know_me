@@ -1,6 +1,5 @@
 require 'pry'
 require_relative 'file_io'
-# require_relative '../../complete_me_project/Complete_Me/lib/complete_me'
 
 class Router
   attr_reader :should_continue
@@ -14,8 +13,6 @@ class Router
   def response(request)
     @total_counter += 1
     @req = request
-    # request = make_request_hash(request_lines)
-    # puts request
     html_body = parse_path
     assemble_response_string(html_body)
   end

@@ -1,5 +1,3 @@
-# require 'simplecov'
-# SimpleCov.start
 require_relative "../lib/router"
 require_relative "../lib/request"
 require 'pry'
@@ -34,7 +32,6 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_can_count
-    # skip
     assert_equal "<h1>Hello, World! (0)</h1>", @p.hello_counter
     assert_equal "<h1>Hello, World! (1)</h1>", @p.hello_counter
     assert_equal "<h1>Hello, World! (2)</h1>", @p.hello_counter
