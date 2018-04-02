@@ -39,7 +39,7 @@ class Parser
     headers + output
   end
 
-  #make hash
+  #make hash - REFACTOR!!!
   def make_request_hash(request_lines) #extract methods?
     # binding.pry #must handle bad formatting
     request = {}
@@ -76,7 +76,7 @@ class Parser
     "<h1>#{Time.now.strftime('%I:%M%p on %A, %B %d, %Y')}</h1>"
   end
 
-  def debug(req) #Chrome doesn't have 'Origin'... more guards?
+  def debug(req)
     response = "Verb: " + req["Verb"] if req["Verb"]
     response += "\nPath: " + req["Path"] if req["Path"]
     response += "\nProtocol: " + req["Protocol"] if req["Protocol"]
