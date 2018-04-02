@@ -22,7 +22,7 @@ class Parser
 
   def parse_path(req = @req)
     case req.path
-    when "/" then debug(request)
+    when "/" then debug(req)
     when "/hello" then hello_counter
     when "/datetime" then date_time
     when "/shutdown" then shutdown
@@ -58,7 +58,7 @@ class Parser
   #     # binding.pry
   #     split = line.split(": ")
   #     request[split[0]] = split[1]
-  #   end
+  # #   end
   #   if request["Host"]
   #     host = request["Host"].split(":")
   #     request["Host"] = host[0] #split host/port
@@ -78,13 +78,13 @@ class Parser
   end
 
   def debug(req)
-    response = "Verb: " + req["Verb"] if req["Verb"]
-    response += "\nPath: " + req["Path"] if req["Path"]
-    response += "\nProtocol: " + req["Protocol"] if req["Protocol"]
-    response += "\nHost: " + req["Host"] if req["Host"]
-    response += "\nPort: " + req["Port"] if req["Port"]
-    response += "\nOrigin: " + req["Origin"] if req["Origin"]
-    response += "\nAccept: " + req["Accept"] if req["Accept"]
+    response = "Verb: " + req.verb if req.verb
+    response += "\nPath: " + req.path if req.path
+    response += "\nProtocol: " + req.protocol if req.protocol
+    response += "\nHost: " + req.host
+    response += "\nPort: " + req.port
+    response += "\nOrigin: " + req.origin
+    response += "\nAccept: " + req.accept
     response = "<pre>" + response + "</pre>"
   end
 
