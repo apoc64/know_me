@@ -1,6 +1,7 @@
 # require 'simplecov'
 # SimpleCov.start
 require_relative "../lib/parser"
+require_relative "../lib/request"
 require 'pry'
 require "Minitest/autorun"
 require "Minitest/pride"
@@ -9,6 +10,7 @@ class ParserTest < Minitest::Test
 
   def setup
     @p = Parser.new
+    @req = Request.new(["GET /hello HTTP/1.1"])
   end
 
   def test_it_exists
@@ -16,7 +18,7 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_responds
-    response = @p.response([""])
+    response = @p.response(@req)
     assert_instance_of String, response
     assert_equal "http/1.1 200 ok", response[0..14]
     assert response.length > 175
@@ -38,14 +40,8 @@ class ParserTest < Minitest::Test
     assert_equal "<h1>Hello, World! (2)</h1>", @p.hello_counter
   end
 
-  def test_it_makes_a_hash
-    request_lines = ["l: x", "z: r"]
-    request = @p.make_request_hash(request_lines)
-    assert_instance_of Hash, request
-  end
-
   def test_it_can_parse_path
-    actual = @p.parse_path({"Path" => "/hello"})
+    actual = @p.parse_path(@req)
     assert_equal "<h1>Hello, World! (0)</h1>", actual
     #test other paths
   end
@@ -60,8 +56,10 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_can_display_debug_info
-    actual = @p.debug({"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
-    expected =  "<pre>Verb: GET\nPath: /\nProtocol: HTTP/1.1\nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</pre>"
+    actual = @p.debug(@req)
+      #{"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
+    expected =  "<pre>Verb: GET\nPath: /hello\nProtocol: HTTP/1.1\nHost: N/A\nPort: N/A\nOrigin: N/A\nAccept: N/A</pre>"
+    # \nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</pre>"
     assert_equal expected, actual
   end
 
@@ -73,14 +71,15 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_can_count_total_requests
-    @p.response(["GET / HTTP"])
-    @p.response(["GET / HTTP"])
-    output = @p.response(["GET /shutdown HTTP"])
+    @p.response(@req)
+    @p.response(@req)
+    new_req = Request.new(["GET /shutdown HTTP"])
+    output = @p.response(new_req)
     assert output.include?("<h1>Total Requests: 3</h1>")
   end
 
   def test_it_can_search_words
-    skip
+    # skip
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
     actual = @p.word_search("NIFNBNJ")
@@ -88,7 +87,7 @@ class ParserTest < Minitest::Test
   end
 
   def test_it_can_complete_me
-    skip
+    # skip
     cm = @p.complete_me
     assert_instance_of CompleteMe, cm
   end
