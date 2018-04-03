@@ -1,5 +1,6 @@
 require 'pry'
 require_relative 'file_io'
+require_relative 'game'
 
 class Router
   attr_reader :should_continue
@@ -64,7 +65,7 @@ class Router
     "<h1>Total Requests: #{@total_counter}</h1>"
   end
 
-  def word_search(word)
+  def word_search(word) #grep?
     return "<h1>Not a valid word</h1>" if word.nil?
     if complete_me.include_word?(word)
       "<h1>#{word.upcase} is a known word</h1>"
@@ -84,19 +85,21 @@ class Router
 
   def start_game(req = @req)
     if req.verb == "POST"
-      #start a game
-      "Good luck!"
+      @game = Game.new
+      "<h1>Good luck!</h1>"
     else
-      "Must post to start a game"
+      "<h1>Must post to start a game</h1>"
     end
   end
 
   def game(req = @req)
+    return "<h1>You need to start a game first</h1>" if @game.nil?
     if req.verb == "POST"
-      #make a guess
+      guess = req.parameters["guess"]
+      @game.guess(guess)
       #redirect to get
     elsif req.verb == "GET"
-      #display game info
+      "<h1>" + @game.evaluate_guess + "</h1>"
     end
   end
 

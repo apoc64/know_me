@@ -7,7 +7,7 @@ class Game
   end
 
   def guess(number)
-    @guesses << number
+    @guesses << number.to_i
   end
 
   def evaluate_guess

@@ -91,11 +91,11 @@ class RouterTest < Minitest::Test
 
   def test_it_can_start_game
     new_req = Request.new(["POST / HTTP"])
-    assert_equal "Good luck!", @p.start_game(new_req)
+    assert_equal "<h1>Good luck!</h1>", @p.start_game(new_req)
   end
 
   def test_it_has_game
 
-  end 
+  end
 
 end
