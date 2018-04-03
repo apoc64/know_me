@@ -19,6 +19,7 @@ class Server
       puts "Got the request: " + req.inspect
       response = router.response(req)
       client.puts response
+      puts "Sent the response: " + response
     end
   end
 

@@ -44,7 +44,6 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_outputs_date_and_time
-    date_time = @p.date_time
     assert_equal "<h1>", @p.date_time[0..3]
     assert_equal "</h1>", @p.date_time[-5..-1]
     assert @p.date_time.length > 37
@@ -106,6 +105,6 @@ class RouterTest < Minitest::Test
   def test_normal_header
   end
 
-  
+
 
 end

@@ -9,7 +9,7 @@ class Router
     @hello_counter = -1
     @total_counter = 0
     @should_continue = true
-    #@response_code = 200
+    @response_code = 200
   end
 
   def response(request)
@@ -33,6 +33,7 @@ class Router
 
   def assemble_response_string(html_body)
     out = output(html_body)
+    # binding.pry
     headers(out.length) + out
   end
 
@@ -40,8 +41,11 @@ class Router
     "<html><head></head><body>#{html_body}</body></html>"
   end
 
-  def headers(length) # case - @response_code ???
-    normal_header(length)
+  def headers(length, rc = @response_code)
+    case rc
+    when 200 then normal_header(length)
+    when 302 then redirect_header(length)
+    end
   end
 
   def normal_header(length)
@@ -50,6 +54,16 @@ class Router
     "server: ruby",
     "content-type: text/html; charset=iso-8859-1",
     "content-length: #{length}\r\n\r\n"].join("\r\n")
+  end
+
+  def redirect_header(length)
+    @response_code = 200
+    ["http/1.1 302 Found",
+      "Location: http://localhost:9292/game",
+      "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+      "server: ruby",
+      "content-type: text/html; charset=iso-8859-1",
+      "content-length: #{length}\r\n\r\n"].join("\r\n")
   end
 
   def hello_counter
@@ -109,7 +123,7 @@ class Router
     if req.verb == "POST"
       guess = req.parameters["guess"]
       @game.guess(guess)
-      #redirect to get
+      @response_code = 302
       #change header
     elsif req.verb == "GET"
       "<h1>" + @game.evaluate_guess + "</h1>"
