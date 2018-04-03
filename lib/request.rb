@@ -74,8 +74,4 @@ class Request
     end
   end
 
-  # def value
-  #   @params[0][1] if @params[0][1]
-  # end
-
 end
