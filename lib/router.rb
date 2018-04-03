@@ -24,6 +24,8 @@ class Router
     when "/datetime" then date_time
     when "/shutdown" then shutdown
     when "/word_search" then word_search(req.parameters["word"])
+    when "/start_game" then start_game
+    when "/game" then game
     end
   end
 
@@ -72,11 +74,29 @@ class Router
   end
 
   def complete_me #so it doesn't have to keep reloading
-    if @cm.nil?
+    if @cm.nil? #memoization
       io = FileIO.new
       @cm = io.complete_me
     else
       @cm
+    end
+  end
+
+  def start_game(req = @req)
+    if req.verb == "POST"
+      #start a game
+      "Good luck!"
+    else
+      "Must post to start a game"
+    end
+  end
+
+  def game(req = @req)
+    if req.verb == "POST"
+      #make a guess
+      #redirect to get
+    elsif req.verb == "GET"
+      #display game info
     end
   end
 

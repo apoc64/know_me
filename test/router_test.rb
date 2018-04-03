@@ -89,4 +89,13 @@ class RouterTest < Minitest::Test
     assert_instance_of CompleteMe, cm
   end
 
+  def test_it_can_start_game
+    new_req = Request.new(["POST / HTTP"])
+    assert_equal "Good luck!", @p.start_game(new_req)
+  end
+
+  def test_it_has_game
+
+  end 
+
 end
