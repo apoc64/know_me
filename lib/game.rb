@@ -5,4 +5,12 @@ class Game
     @answer = answer
   end
 
+  def guess(number)
+
+  end
+
+  def evaluate_guess
+
+  end 
+
 end
