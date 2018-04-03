@@ -9,6 +9,7 @@ class Router
     @hello_counter = -1
     @total_counter = 0
     @should_continue = true
+    #@response_code = 200
   end
 
   def response(request)
@@ -31,13 +32,24 @@ class Router
   end
 
   def assemble_response_string(html_body)
-    output = "<html><head></head><body>#{html_body}</body></html>"
-    headers = ["http/1.1 200 ok",
-      "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-      "server: ruby",
-      "content-type: text/html; charset=iso-8859-1",
-      "content-length: #{output.length}\r\n\r\n"].join("\r\n")
-    headers + output
+    out = output(html_body)
+    headers(out.length) + out
+  end
+
+  def output(html_body)
+    "<html><head></head><body>#{html_body}</body></html>"
+  end
+
+  def headers(length) # case - @response_code ???
+    normal_header(length)
+  end
+
+  def normal_header(length)
+  ["http/1.1 200 ok",
+    "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+    "server: ruby",
+    "content-type: text/html; charset=iso-8859-1",
+    "content-length: #{length}\r\n\r\n"].join("\r\n")
   end
 
   def hello_counter
@@ -98,6 +110,7 @@ class Router
       guess = req.parameters["guess"]
       @game.guess(guess)
       #redirect to get
+      #change header
     elsif req.verb == "GET"
       "<h1>" + @game.evaluate_guess + "</h1>"
     end

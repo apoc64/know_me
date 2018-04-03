@@ -95,7 +95,17 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_has_game
-
   end
+
+  def test_header
+  end
+
+  def test_output
+  end
+
+  def test_normal_header
+  end
+
+  
 
 end
