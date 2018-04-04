@@ -28,6 +28,8 @@ class Router
     when "/word_search" then word_search(req.parameters["word"])
     when "/start_game" then start_game
     when "/game" then game
+    when "/force_error" then force_error
+    else not_found
     end
   end
 
@@ -41,9 +43,15 @@ class Router
   end
 
   def headers(length, rc = @response_code)
+    @response_code = 200
     case rc
     when 200 then normal_header(length)
     when 302 then redirect_header(length)
+    when 301 then moved_header(length)
+    when 401 then unauthorized_header(length)
+    when 403 then forbidden_header(length)
+    when 404 then not_found_header(length)
+    when 500 then error_header(length)
     end
   end
 
@@ -52,9 +60,28 @@ class Router
   end
 
   def redirect_header(length)
-    @response_code = 200
     rh = ["http/1.1 302 Found", "Location: http://localhost:9292/game"]
     (rh + additional_headers(length)).join("\r\n")
+  end
+
+  def moved_header(length)
+    (["http/1.1 301 Moved Permanently"] + additional_headers(length)).join("\r\n")
+  end
+
+  def unauthorized_header(length)
+    (["http/1.1 401 Unauthorized"] + additional_headers(length)).join("\r\n")
+  end
+
+  def forbidden_header(length)
+    (["http/1.1 403 Forbidden"] + additional_headers(length)).join("\r\n")
+  end
+
+  def not_found_header(length)
+    (["http/1.1 404 Not Found"] + additional_headers(length)).join("\r\n")
+  end
+
+  def error_header(length)
+    (["http/1.1 500 Internal Server Error"] + additional_headers(length)).join("\r\n")
   end
 
   def additional_headers(length)
@@ -108,11 +135,14 @@ class Router
   end
 
   def start_game(req = @req)
-    if req.verb == "POST"
+    return "<h1>Must POST to start a game</h1>" if req.verb != "POST"
+    if @game.nil?
       @game = Game.new
+      @response_code = 301
       "<h1>Good luck!</h1>"
     else
-      "<h1>Must post to start a game</h1>"
+      @response_code = 403
+      "<h1>Game already running</h1>"
     end
   end
 
@@ -125,6 +155,20 @@ class Router
     elsif req.verb == "GET"
       "<h1>" + @game.evaluate_guess + "</h1>"
     end
+  end
+
+  def not_found
+    @response_code = 404
+    "<h1>Not Found 404</h1>"
+  end
+
+  def force_error
+    @response_code = 500
+    puts "preparing to puts caller"
+    call = caller
+    puts call
+    puts call.class
+    "<p>#{call.join}</p>"
   end
 
 end

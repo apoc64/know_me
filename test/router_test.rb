@@ -142,4 +142,28 @@ class RouterTest < Minitest::Test
       "content-length: 15\r\n\r\n"]
   end
 
+  def test_it_can_not_found
+
+  end
+
+  def test_it_can_force_error
+
+  end
+
+  def test_it_can_moved_header
+
+  end
+
+  def test_unauthorized_header
+
+  end
+
+  def test_forbidden_header
+
+  end
+
+  def test_error_header
+
+  end 
+
 end
