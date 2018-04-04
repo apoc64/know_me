@@ -94,17 +94,52 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_has_game
+    assert_equal "<h1>You need to start a game first</h1>", @p.game
+    req = Request.new(["POST /game?guess=55 HTTP/1.1", "host: frre"])
+    @p.start_game(req)
+    assert_equal 302, @p.game(req)
+    req = Request.new(["GET /game?guess=55 HTTP/1.1", "host: frre"])
+    result = @p.game(req)
+    assert_equal "<h1>You", result[0..6]
+    assert result.include?("Your guess of 55")
   end
 
   def test_header
+    h = @p.headers(5)
+    assert_instance_of String, h
+    assert h.include?("content-length: 5\r\n\r\n")
+    assert h.include?("http/1.1 200 ok")
+
+    h = @p.headers(7, 302)
+    assert_instance_of String, h
+    assert h.include?("content-length: 7\r\n\r\n")
+    assert h.include?("http/1.1 302 Found")
   end
 
   def test_output
+    actual = @p.output("Hello")
+    expected = "<html><head></head><body>Hello</body></html>"
+    assert_equal expected, actual
   end
 
   def test_normal_header
+    nh = @p.normal_header(9)
+    assert nh.include?("http/1.1 200 ok\r\ndate: ")
+    assert nh.include?("content-length: 9\r\n\r\n")
   end
 
+  def test_redirect_header
+    rh = @p.redirect_header(11)
+    assert rh.include?("http/1.1 302 Found\r\nLocation: http://localhost:9292/game\r\ndate: ")
+    assert rh.include?("content-length: 11\r\n\r\n")
+  end
 
+  def test_additional_headers
+    actual = @p.additional_headers(15)
+    expected = ["date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+      "server: ruby",
+      "content-type: text/html; charset=iso-8859-1",
+      "content-length: 15\r\n\r\n"]
+  end
 
 end

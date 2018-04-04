@@ -10,15 +10,15 @@ class Game
     @guesses << number.to_i
   end
 
-  def evaluate_guess
+  def evaluate_guess(guess = @guesses[-1])
     return "You have to guess first" if @guesses.count == 0
-    guesses = @guesses.count > 1 ? "#{@guesses.count} guesses" : "1 guess"
-    if @guesses[-1] == @answer
-      "Your guess of #{@guesses[-1]} was correct. It took you #{guesses}"
-    elsif @guesses[-1] > @answer
-      "You have made #{guesses}. Your guess of #{@guesses[-1]} was too high"
+    count = @guesses.count > 1 ? "#{@guesses.count} guesses" : "1 guess"
+    if guess == @answer
+      "Your guess of #{guess} was correct. It took you #{count}"
+    elsif guess > @answer
+      "You have made #{count}. Your guess of #{guess} was too high"
     else
-      "You have made #{guesses}. Your guess of #{@guesses[-1]} was too low"
+      "You have made #{count}. Your guess of #{guess} was too low"
     end
   end
 

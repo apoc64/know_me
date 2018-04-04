@@ -33,7 +33,6 @@ class Router
 
   def assemble_response_string(html_body)
     out = output(html_body)
-    # binding.pry
     headers(out.length) + out
   end
 
@@ -49,21 +48,20 @@ class Router
   end
 
   def normal_header(length)
-  ["http/1.1 200 ok",
-    "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-    "server: ruby",
-    "content-type: text/html; charset=iso-8859-1",
-    "content-length: #{length}\r\n\r\n"].join("\r\n")
+    (["http/1.1 200 ok"] + additional_headers(length)).join("\r\n")
   end
 
   def redirect_header(length)
     @response_code = 200
-    ["http/1.1 302 Found",
-      "Location: http://localhost:9292/game",
-      "date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
-      "server: ruby",
-      "content-type: text/html; charset=iso-8859-1",
-      "content-length: #{length}\r\n\r\n"].join("\r\n")
+    rh = ["http/1.1 302 Found", "Location: http://localhost:9292/game"]
+    (rh + additional_headers(length)).join("\r\n")
+  end
+
+  def additional_headers(length)
+    ["date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
+    "server: ruby",
+    "content-type: text/html; charset=iso-8859-1",
+    "content-length: #{length}\r\n\r\n"]
   end
 
   def hello_counter
@@ -124,7 +122,6 @@ class Router
       guess = req.parameters["guess"]
       @game.guess(guess)
       @response_code = 302
-      #change header
     elsif req.verb == "GET"
       "<h1>" + @game.evaluate_guess + "</h1>"
     end
