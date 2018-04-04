@@ -17,6 +17,13 @@ class GameTest < Minitest::Test
     assert game.answer < 100
   end
 
+  def test_it_can_guess
+    game = Game.new
+    game.guess(34)
+    game.guess(53)
+    assert_equal [34,53,47], game.guess(47)
+  end
+
   def test_guess_game_can_evaluate_guesses
     game = Game.new(37)
     game.guess(40)
