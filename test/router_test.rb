@@ -140,30 +140,33 @@ class RouterTest < Minitest::Test
       "server: ruby",
       "content-type: text/html; charset=iso-8859-1",
       "content-length: 15\r\n\r\n"]
+    assert_equal expected, actual
   end
 
   def test_it_can_not_found
-
+    assert_equal "<h1>Not Found 404</h1>", @p.not_found
   end
 
   def test_it_can_force_error
-
+    assert_instance_of String, @p.force_error
+    assert @p.force_error.length > 100
+    assert_equal "<p>", @p.force_error[0..2]
   end
-
-  def test_it_can_moved_header
-
-  end
-
-  def test_unauthorized_header
-
-  end
-
-  def test_forbidden_header
-
-  end
-
-  def test_error_header
-
-  end 
+  #
+  # def test_it_can_moved_header
+  #
+  # end
+  #
+  # def test_unauthorized_header
+  #
+  # end
+  #
+  # def test_forbidden_header
+  #
+  # end
+  #
+  # def test_error_header
+  #
+  # end
 
 end

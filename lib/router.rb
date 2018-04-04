@@ -47,16 +47,16 @@ class Router
     case rc
     when 200 then normal_header(length)
     when 302 then redirect_header(length)
-    when 301 then moved_header(length)
-    when 401 then unauthorized_header(length)
-    when 403 then forbidden_header(length)
-    when 404 then not_found_header(length)
-    when 500 then error_header(length)
+    when 301 then normal_header(length, "301 Moved Permanently")
+    when 401 then normal_header(length, "401 Unauthorized")
+    when 403 then normal_header(length, "403 Forbidden")
+    when 404 then normal_header(length, "404 Not Found")
+    when 500 then normal_header(length, "500 Internal Server Error")
     end
   end
 
-  def normal_header(length)
-    (["http/1.1 200 ok"] + additional_headers(length)).join("\r\n")
+  def normal_header(length, info = "200 ok")
+    (["http/1.1 #{info}"] + additional_headers(length)).join("\r\n")
   end
 
   def redirect_header(length)
@@ -64,25 +64,25 @@ class Router
     (rh + additional_headers(length)).join("\r\n")
   end
 
-  def moved_header(length)
-    (["http/1.1 301 Moved Permanently"] + additional_headers(length)).join("\r\n")
-  end
-
-  def unauthorized_header(length)
-    (["http/1.1 401 Unauthorized"] + additional_headers(length)).join("\r\n")
-  end
-
-  def forbidden_header(length)
-    (["http/1.1 403 Forbidden"] + additional_headers(length)).join("\r\n")
-  end
-
-  def not_found_header(length)
-    (["http/1.1 404 Not Found"] + additional_headers(length)).join("\r\n")
-  end
-
-  def error_header(length)
-    (["http/1.1 500 Internal Server Error"] + additional_headers(length)).join("\r\n")
-  end
+  # def moved_header(length)
+  #   (["http/1.1 301 Moved Permanently"] + additional_headers(length)).join("\r\n")
+  # end
+  #
+  # def unauthorized_header(length)
+  #   (["http/1.1 401 Unauthorized"] + additional_headers(length)).join("\r\n")
+  # end
+  #
+  # def forbidden_header(length)
+  #   (["http/1.1 403 Forbidden"] + additional_headers(length)).join("\r\n")
+  # end
+  #
+  # def not_found_header(length)
+  #   (["http/1.1 404 Not Found"] + additional_headers(length)).join("\r\n")
+  # end
+  #
+  # def error_header(length)
+  #   (["http/1.1 500 Internal Server Error"] + additional_headers(length)).join("\r\n")
+  # end
 
   def additional_headers(length)
     ["date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
@@ -164,10 +164,7 @@ class Router
 
   def force_error
     @response_code = 500
-    puts "preparing to puts caller"
     call = caller
-    puts call
-    puts call.class
     "<p>#{call.join}</p>"
   end
 
