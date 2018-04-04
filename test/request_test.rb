@@ -57,4 +57,10 @@ class RequestTest < Minitest::Test
     assert_equal "Monster", @req.set_element("Godzilla")
   end
 
+  def test_it_sets_body_content
+    @req.set_request_body("guess=55&monster=godzilla")
+    assert_equal "55", @req.body_params["guess"]
+  end
+
+
 end

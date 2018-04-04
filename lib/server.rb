@@ -17,9 +17,12 @@ class Server
       client = server.accept
       req = Request.new(get_request(client))
       puts "Got the request: " + req.inspect
+      get_body_request(req, client)
+
       response = router.response(req)
       client.puts response
       puts "Sent the response: " + response
+      # client.close
     end
   end
 
@@ -31,6 +34,17 @@ class Server
     request_lines
   end
 
+  def get_body_request(req, client)
+    if req.elements["Content-Length"]
+      length = req.elements["Content-Length"].to_i
+      puts "Content-Length: " + length.to_s
+      content = client.read(length)
+      # = client.gets(length)
+      puts content
+    end
+
+  end
+
 end
 
-s = Server.new(9292)
+s = Server.new(9292) #move before testing

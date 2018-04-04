@@ -95,7 +95,8 @@ class RouterTest < Minitest::Test
 
   def test_it_has_game
     assert_equal "<h1>You need to start a game first</h1>", @p.game
-    req = Request.new(["POST /game?guess=55 HTTP/1.1", "host: frre"])
+    req = Request.new(["POST /game HTTP/1.1", "host: frre"])
+    req.set_request_body("guess=55")
     @p.start_game(req)
     assert_equal 302, @p.game(req)
     req = Request.new(["GET /game?guess=55 HTTP/1.1", "host: frre"])

@@ -47,7 +47,7 @@ class Router
     case rc
     when 200 then normal_header(length)
     when 302 then redirect_header(length)
-    when 301 then normal_header(length, "301 Moved Permanently")
+    when 301 then normal_header(length, "301 Moved Permanently") #redirect ??? instructions/good luch ?
     when 401 then normal_header(length, "401 Unauthorized")
     when 403 then normal_header(length, "403 Forbidden")
     when 404 then normal_header(length, "404 Not Found")
@@ -118,6 +118,7 @@ class Router
 
   def word_search(word) #grep?
     return "<h1>Not a valid word</h1>" if word.nil?
+    #if req.accept.include?("application/json")
     if complete_me.include_word?(word)
       "<h1>#{word.upcase} is a known word</h1>"
     else
@@ -148,8 +149,8 @@ class Router
 
   def game(req = @req)
     return "<h1>You need to start a game first</h1>" if @game.nil?
-    if req.verb == "POST"
-      guess = req.parameters["guess"]
+    if (req.verb == "POST") && (req.body_params["guess"])
+      guess = req.body_params["guess"]
       @game.guess(guess)
       @response_code = 302
     elsif req.verb == "GET"

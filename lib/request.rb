@@ -3,7 +3,8 @@ class Request
   :path,
   :protocol,
   :elements,
-  :parameters
+  :parameters,
+  :body_params
 
   def initialize(request_lines)
     if set_first_line(request_lines[0])
@@ -72,6 +73,13 @@ class Request
     else
       "N/A"
     end
+  end
+
+  def set_request_body(content)
+    body_elements = content.split("&")
+    @body_params = body_elements.map do |element|
+      element.split("=")
+    end.to_h
   end
 
 end
