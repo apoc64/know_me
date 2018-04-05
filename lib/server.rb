@@ -14,13 +14,16 @@ class Server
   def connection_loop(server, router)
     while router.should_continue
       puts "Ready For request"
-      client = server.accept
-      req = Request.new(get_request(client))
-      puts "Got the request: " + req.inspect
-      get_body_request(req, client)
-      response = router.response(req)
-      client.puts response
-      puts "Sent the response: " + response
+      Thread.start(server.accept) do |client|
+        # client = server.accept
+        req = Request.new(get_request(client))
+        puts "Got the request: " + req.inspect
+        get_body_request(req, client)
+        response = router.response(req)
+        client.puts response
+        puts "Sent the response: " + response
+        client.close
+      end 
     end
   end
 

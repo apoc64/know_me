@@ -32,6 +32,7 @@ class Router
     when "/start_game" then start_game(req)
     when "/game" then game
     when "/force_error" then force_error
+    when "/sleepy" then sleepy
     else not_found
     end
   end
@@ -155,6 +156,11 @@ class Router
     @response_code = 500
     call = caller
     "<p>#{call.join}</p>"
+  end
+
+  def sleepy
+    sleep(3)
+    "<h1>yawn...</h1>"
   end
 
 end
