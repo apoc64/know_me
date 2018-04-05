@@ -116,11 +116,13 @@ class Router
     "<h1>Total Requests: #{@total_counter}</h1>"
   end
 
-  def word_search(word) #grep?
+  def word_search(word) #grep? #require json? .. to_json pretty
     return "<h1>Not a valid word</h1>" if word.nil?
-    #if req.accept.include?("application/json")
+    accept_json = @req.accept.include?("application/json")
     if complete_me.include_word?(word)
-      "<h1>#{word.upcase} is a known word</h1>"
+      html = "<h1>#{word.upcase} is a known word</h1>"
+      json = '{"word":"' + word + '","is_word":true}'
+      accept_json ? json : html
     else
       "<h1>#{word.upcase} is not a known word</h1>"
     end
