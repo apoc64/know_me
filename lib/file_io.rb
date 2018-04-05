@@ -1,5 +1,5 @@
 require 'pry'
-require_relative '../../complete_me_project/Complete_Me/lib/complete_me'
+require_relative 'complete_me'
 
 class FileIO
 

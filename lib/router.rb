@@ -10,6 +10,8 @@ class Router
     @total_counter = 0
     @should_continue = true
     @response_code = 200
+    @game = nil
+    @req = nil
   end
 
   def response(request)
