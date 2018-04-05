@@ -12,6 +12,7 @@ class Router
     @response_code = 200
     @game = nil
     @req = nil
+    @cm = nil
   end
 
   def response(request)
@@ -120,6 +121,7 @@ class Router
 
   def word_search(word) #grep? #require json? .. to_json pretty
     return "<h1>Not a valid word</h1>" if word.nil?
+    # binding.pry
     accept_json = @req.accept.include?("application/json")
     if complete_me.include_word?(word)
       html = "<h1>#{word.upcase} is a known word</h1>"

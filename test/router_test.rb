@@ -76,6 +76,7 @@ class RouterTest < Minitest::Test
 
   def test_it_can_search_words
     skip
+    @p.response(@req)
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
     actual = @p.word_search("NIFNBNJ")
