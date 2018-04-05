@@ -1,8 +1,7 @@
-require_relative "../lib/router"
-require_relative "../lib/request"
+require "./lib/router"
+require "./lib/request"
 require 'pry'
-require "Minitest/autorun"
-require "Minitest/pride"
+require './test/test_helper'
 
 class RouterTest < Minitest::Test
 
@@ -125,6 +124,7 @@ class RouterTest < Minitest::Test
     assert_instance_of String, h
     assert h.include?("content-length: 7\r\n\r\n")
     assert h.include?("http/1.1 302 Found")
+    #needs more 
   end
 
   def test_output

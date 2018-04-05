@@ -1,8 +1,8 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper'
 require 'faraday'
 require './lib/server'
 require 'pry'
+
 class ServerTest < Minitest::Test
 
   def test_it_responds_to_request

@@ -1,7 +1,5 @@
-require_relative "../lib/request"
-require 'pry'
-require "Minitest/autorun"
-require "Minitest/pride"
+require './lib/request'
+require './test/test_helper'
 
 class RequestTest < Minitest::Test
 
