@@ -37,9 +37,8 @@ class Server
       length = req.elements["Content-Length"].to_i
       puts "Content-Length: " + length.to_s
       content = client.read(length)
-      puts content
+      req.set_request_body(content)
     end
-
   end
 
 end

@@ -124,7 +124,10 @@ class Router
       json = '{"word":"' + word + '","is_word":true}'
       accept_json ? json : html
     else
-      "<h1>#{word.upcase} is not a known word</h1>"
+      html = "<h1>#{word.upcase} is not a known word</h1>"
+      matches = complete_me.suggest(word)
+      json = '{"word":"' + word + '","possible_matches":' + matches.to_s + '}'
+      accept_json ? json : html
     end
   end
 
@@ -151,6 +154,7 @@ class Router
 
   def game(req = @req)
     return "<h1>You need to start a game first</h1>" if @game.nil?
+    # binding.pry
     if (req.verb == "POST") && (req.body_params["guess"])
       guess = req.body_params["guess"]
       @game.guess(guess)

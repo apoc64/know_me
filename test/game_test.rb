@@ -13,7 +13,7 @@ class GameTest < Minitest::Test
   def test_game_has_an_answer
     game = Game.new
     assert_instance_of Integer, game.answer
-    assert game.answer > 0
+    assert game.answer > -1
     assert game.answer < 100
   end
 

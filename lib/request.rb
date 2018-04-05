@@ -14,6 +14,7 @@ class Request
       @path = "N/A"
       @protocol = "N/A"
     end
+    @body_params = Hash.new
   end
 
   def set_first_line(first_line)
