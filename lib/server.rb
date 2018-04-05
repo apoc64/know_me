@@ -43,4 +43,4 @@ class Server
 
 end
 
-s = Server.new(9292) #move before testing
+# s = Server.new(9292) #move before testing

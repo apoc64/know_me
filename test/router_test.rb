@@ -154,21 +154,5 @@ class RouterTest < Minitest::Test
     assert @p.force_error.length > 100
     assert_equal "<p>", @p.force_error[0..2]
   end
-  #
-  # def test_it_can_moved_header
-  #
-  # end
-  #
-  # def test_unauthorized_header
-  #
-  # end
-  #
-  # def test_forbidden_header
-  #
-  # end
-  #
-  # def test_error_header
-  #
-  # end
 
 end
