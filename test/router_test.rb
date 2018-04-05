@@ -40,6 +40,17 @@ class RouterTest < Minitest::Test
   def test_it_can_parse_path
     actual = @p.parse_path(@req)
     assert_equal "<h1>Hello, World! (0)</h1>", actual
+    req = Request.new(["GET /start_game HTTP/1.1"])
+    actual = @p.parse_path(req)
+    assert_equal "<h1>Must POST to start a game</h1>", actual
+    req = Request.new(["GET / HTTP/1.1"])
+    actual = @p.parse_path(req)
+    assert actual.include?("<pre>Verb: GET\nPath: /")
+    #time to load complete me:
+    req = Request.new(["GET /word_search?word=pizza HTTP/1.1"])
+    @p.response(req)
+    actual = @p.parse_path(req)
+    assert actual.include?("<h1>PIZZA is a known word</h1>")
     #test other paths
   end
 
@@ -55,8 +66,6 @@ class RouterTest < Minitest::Test
     actual = @p.debug(@req)
     expected =  "<pre>Verb: GET\nPath: /hello\nProtocol: HTTP/1.1\nHost: N/A\nPort: N/A\nOrigin: N/A\nAccept: N/A</pre>"
     assert_equal expected, actual
-      #{"Verb" => "GET", "Path" => "/", "Protocol" => "HTTP/1.1", "Host" => "127.0.0.1", "Port" => "9292", "Origin" => "127.0.0.1", "Accept" => "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"})
-    # \nHost: 127.0.0.1\nPort: 9292\nOrigin: 127.0.0.1\nAccept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8</pre>"
   end
 
   def test_it_can_shutdown
@@ -75,7 +84,7 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_can_search_words
-    skip
+    # skip #time to load complete me
     @p.response(@req)
     actual = @p.word_search("pizza")
     assert_equal "<h1>PIZZA is a known word</h1>", actual
@@ -84,7 +93,7 @@ class RouterTest < Minitest::Test
   end
 
   def test_it_can_complete_me
-    skip
+    # skip # time to load complete me
     cm = @p.complete_me
     assert_instance_of CompleteMe, cm
   end

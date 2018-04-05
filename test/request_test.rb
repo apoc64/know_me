@@ -62,5 +62,4 @@ class RequestTest < Minitest::Test
     assert_equal "55", @req.body_params["guess"]
   end
 
-
 end

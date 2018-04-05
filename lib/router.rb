@@ -29,7 +29,7 @@ class Router
     when "/datetime" then date_time
     when "/shutdown" then shutdown
     when "/word_search" then word_search(req.parameters["word"])
-    when "/start_game" then start_game
+    when "/start_game" then start_game(req)
     when "/game" then game
     when "/force_error" then force_error
     else not_found
@@ -67,26 +67,6 @@ class Router
     (rh + additional_headers(length)).join("\r\n")
   end
 
-  # def moved_header(length)
-  #   (["http/1.1 301 Moved Permanently"] + additional_headers(length)).join("\r\n")
-  # end
-  #
-  # def unauthorized_header(length)
-  #   (["http/1.1 401 Unauthorized"] + additional_headers(length)).join("\r\n")
-  # end
-  #
-  # def forbidden_header(length)
-  #   (["http/1.1 403 Forbidden"] + additional_headers(length)).join("\r\n")
-  # end
-  #
-  # def not_found_header(length)
-  #   (["http/1.1 404 Not Found"] + additional_headers(length)).join("\r\n")
-  # end
-  #
-  # def error_header(length)
-  #   (["http/1.1 500 Internal Server Error"] + additional_headers(length)).join("\r\n")
-  # end
-
   def additional_headers(length)
     ["date: #{Time.now.strftime('%a, %e %b %Y %H:%M:%S %z')}",
     "server: ruby",
@@ -121,7 +101,6 @@ class Router
 
   def word_search(word) #grep? #require json? .. to_json pretty
     return "<h1>Not a valid word</h1>" if word.nil?
-    # binding.pry
     accept_json = @req.accept.include?("application/json")
     if complete_me.include_word?(word)
       html = "<h1>#{word.upcase} is a known word</h1>"
@@ -158,7 +137,6 @@ class Router
 
   def game(req = @req)
     return "<h1>You need to start a game first</h1>" if @game.nil?
-    # binding.pry
     if (req.verb == "POST") && (req.body_params["guess"])
       guess = req.body_params["guess"]
       @game.guess(guess)

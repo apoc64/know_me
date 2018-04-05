@@ -76,7 +76,7 @@ class Request
     end
   end
 
-  def set_request_body(content)
+  def set_request_body(content) #handles x-www-form-urlencoded
     body_elements = content.split("&")
     @body_params = body_elements.map do |element|
       element.split("=")
